@@ -1,0 +1,75 @@
+ممتاز! 👍
+
+سنضع الآن كود SELBAY في المساحة البيضاء.
+
+انسخ الكود التالي كاملاً والصقه هناك:
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SELBAY</title>
+<style>
+body{font-family:Arial;background:#f2f4f8;margin:0;padding:18px;color:#172033}
+header{background:#172033;color:white;padding:20px;border-radius:14px;text-align:center}
+.card{background:white;padding:15px;margin:12px 0;border-radius:12px;box-shadow:0 2px 8px #ddd}
+input,button,select{padding:12px;margin:5px 0;width:100%;box-sizing:border-box;border-radius:8px;border:1px solid #ccc;font-size:16px}
+button{background:#172033;color:white;border:0}
+.product{border-bottom:1px solid #ddd;padding:12px 0}
+small{color:#666}
+</style>
+</head>
+<body>
+<header><h1>SELBAY</h1><p>إدارة التجارة الشخصية</p></header>
+<div class="card">
+<h3>إضافة منتج</h3>
+<input id="name" placeholder="اسم المنتج">
+<input id="buy" type="number" placeholder="سعر الشراء بالدج">
+<input id="sell" type="number" placeholder="سعر البيع بالدج">
+<input id="debt" type="number" placeholder="الدين المتبقي بالدج">
+<select id="status"><option>متوفر</option><option>تم البيع</option></select>
+<button onclick="add()">إضافة المنتج</button>
+</div>
+<div class="card">
+<h3>الملخص</h3>
+<p>عدد المنتجات: <b id="count">0</b></p>
+<p>الأرباح: <b id="profit">0</b> دج</p>
+<p>الديون: <b id="debts">0</b> دج</p>
+</div>
+<div class="card">
+<h3>قائمة المنتجات</h3>
+<div id="list"></div>
+</div>
+<script>
+let products=JSON.parse(localStorage.getItem('selbay')||'[]');
+function save(){localStorage.setItem('selbay',JSON.stringify(products));render()}
+function add(){
+let name=document.getElementById('name').value.trim();
+let buy=Number(document.getElementById('buy').value);
+let sell=Number(document.getElementById('sell').value);
+let debt=Number(document.getElementById('debt').value);
+let status=document.getElementById('status').value;
+if(!name){alert('اكتب اسم المنتج');return}
+products.push({name,buy,sell,debt,status});
+save();
+['name','buy','sell','debt'].forEach(x=>document.getElementById(x).value='');
+}
+function render(){
+document.getElementById('count').textContent=products.length;
+document.getElementById('profit').textContent=products.filter(p=>p.status==='تم البيع').reduce((s,p)=>s+p.sell-p.buy,0);
+document.getElementById('debts').textContent=products.reduce((s,p)=>s+p.debt,0);
+document.getElementById('list').innerHTML='';
+products.forEach((p,i)=>{
+let d=document.createElement('div');d.className='product';
+d.innerHTML='<b>'+p.name+'</b><br><small>الشراء: '+p.buy+' دج | البيع: '+p.sell+' دج</small><br><small>الفائدة: '+(p.sell-p.buy)+' دج | الدين: '+p.debt+' دج</small><br><b>'+p.status+'</b>';
+let b=document.createElement('button');b.textContent='حذف';b.onclick=()=>{if(confirm('حذف المنتج؟')){products.splice(i,1);save()}};
+d.appendChild(b);document.getElementById('list').appendChild(d);
+});
+}
+render();
+</script>
+</body>
+</html>
+
+بعد لصق الكود، لا تغلق الصفحة. أخبرني عندما تنتهي.
